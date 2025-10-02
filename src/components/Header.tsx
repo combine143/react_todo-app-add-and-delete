@@ -1,5 +1,6 @@
 import React from 'react';
 import { Todo } from '../../types/Todo';
+import classNames from 'classnames';
 
 interface HeaderProps {
   todoTitle: string;
@@ -26,7 +27,9 @@ export const Header: React.FC<HeaderProps> = ({
     {todos.length > 0 && (
       <button
         type="button"
-        className={`todoapp__toggle-all ${todos.every(t => t.completed) ? 'active' : ''}`}
+        className={classNames('todoapp__toggle-all', {
+          active: todos.every(t => t.completed),
+        })}
         data-cy="ToggleAllButton"
         onClick={toggleTodoAll}
       />

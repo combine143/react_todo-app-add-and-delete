@@ -11,28 +11,27 @@ import {
   updateTodo,
   USER_ID,
 } from '../api/todos';
-
-type FilterType = 'all' | 'active' | 'completed';
+import classNames from 'classnames';
+import { Filter } from '../types/Filter';
 
 export const App: React.FC = () => {
   const [todoTitle, setTodoTitle] = useState('');
   const [todos, setTodos] = useState<Todo[]>([]);
   const [message, setMessage] = useState('');
-  const [selectedFilter, setSelectedFilter] = useState<FilterType>('all');
+  const [selectedFilter, setSelectedFilter] = useState<Filter>(Filter.All);
   const [editingTodoId, setEditingTodoId] = useState<number | null>(null);
   const [editingTitle, setEditingTitle] = useState('');
   const [loadingTodoIds, setLoadingTodoIds] = useState<number[]>([]);
   const [isCreating, setIsCreating] = useState(false);
   const [tempTodo, setTempTodo] = useState<Todo | null>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
-  const delay = () => 200;
 
   const withLoader = (id: number, callback: () => void) => {
     setLoadingTodoIds(prev => [...prev, id]);
     setTimeout(() => {
       callback();
       setLoadingTodoIds(prev => prev.filter(lid => lid !== id));
-    }, delay());
+    }, 200);
   };
 
   const toggleTodoAll = () => {
@@ -43,11 +42,11 @@ export const App: React.FC = () => {
   };
 
   const filteredTodos = todos.filter(todo => {
-    if (selectedFilter === 'active') {
+    if (selectedFilter === Filter.Active) {
       return !todo.completed;
     }
 
-    if (selectedFilter === 'completed') {
+    if (selectedFilter === Filter.Completed) {
       return todo.completed;
     }
 
@@ -212,7 +211,13 @@ export const App: React.FC = () => {
 
       <div
         data-cy="ErrorNotification"
-        className={`notification is-danger is-light has-text-weight-normal ${!message ? 'hidden' : ''}`}
+        className={classNames(
+          'notification',
+          'is-danger',
+          'is-light',
+          'has-text-weight-normal',
+          { hidden: !message },
+        )}
       >
         <button
           data-cy="HideErrorButton"

@@ -5,15 +5,15 @@ interface Props {
   todo: Todo;
 }
 
-export const TempTodo: React.FC<Props> = ({ todo }) => (
+export const TempTodo: React.FC<Props> = ({ todo: { id, title } }) => (
   <div data-cy="Todo" className="todo">
     <label
       className="todo__status-label"
-      htmlFor={`temp-todo-${todo.id}`}
+      htmlFor={`temp-todo-${id}`}
       aria-label="Toggle temp todo status"
     >
       <input
-        id={`temp-todo-${todo.id}`}
+        id={`temp-todo-${id}`}
         type="checkbox"
         className="todo__status"
         checked={false}
@@ -21,7 +21,7 @@ export const TempTodo: React.FC<Props> = ({ todo }) => (
       />
     </label>
     <span className="todo__title" data-cy="TodoTitle">
-      {todo.title}
+      {title}
     </span>
     <button type="button" className="todo__remove" disabled>
       ×
